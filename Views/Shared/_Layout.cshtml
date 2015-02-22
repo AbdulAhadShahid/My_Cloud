@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <!-- boostrap -->
+    <link rel="stylesheet" href="~/Content/animate.css">
+    <link rel="stylesheet" href="~/Content/style.css">
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-1.8.2.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+</head>
+<body>
+
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=249078091804020&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    $(document).ready(function () {
+        $('#mybut').click(function () {
+            $('#test').children().remove();
+            var collect = '<div id="search" class="spacer"><div class="row"><div class="col-md-12 col-xs-12"><div style="font-family:\'lithos pro\';background-color:HighlightText;margin-top:50px;margin-left:50px;margin-right:50px">';
+            var searchTerm = $('#searchterm').val();
+            $.getJSON("/Home/Search?searchterm=" + searchTerm, function (data) {
+                if (data && data == "")
+                    collect = collect + '<p>No Such Song Found</p>';
+                $.each(data, function (i, item) {
+                    collect = collect + '<div style="padding-top:20px;padding-left:20px">';
+                    collect = collect + '<h2 style="background-color:HighlightText;margin-top:10px">' + item.Name + '</h2>';
+                    collect = collect + '<audio controls style="margin-top:20px" ><source src="/Songs/' + item.SongFileName + '" type="audio/ogg"></audio></div>';
+                });
+                collect = collect + '</div></div> </div></div>';
+                $('#test').append(collect);
+             });
+            });
+        });
+</script>
+
+<!-- Header Starts -->
+<div class="navbar-wrapper ">
+    <div class="container">
+
+        <div class="navbar navbar-inverse navbar-fixed-top animated fadeInDown" role="navigation" id="top-nav">
+            <div class="container">
+                <div class="navbar-header">
+                    <!-- Logo Starts -->
+                    <a class="navbar-brand" href="/Home/Index"><img src="~/Images/logo.jpg" height="30" alt="logo" /></a>
+                    <!-- #Logo Ends -->
+                </div>
+
+                <!-- Nav Starts -->
+                <div class="navbar-collapse  collapse">
+                    <div class="col-xs-5 col-sm-4">
+                       <!-- <form class="navbar-form" role="search" action="/Home/Search" method="get">-->
+                            <div style="padding-top:7px" class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" name="searchterm" id="searchterm"/>
+                                <div class="input-group-btn">
+                                    <button id="mybut" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </div>
+                       <!-- </form>-->
+                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Playlist", "Playlist", "Home")</li>
+                        <li><a href="/Home/Index/#album">Top Singers</a></li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li>@Html.ActionLink("Log Out", "Logout", "Account")</li>
+                            <li>@Html.ActionLink("Favourites", "Favourites", "Account")</li>
+                        }
+                        else
+                        {
+                            <li> @Html.ActionLink("Sign Up/ Login", "SignUp", "Account")</li>
+                        }
+                    </ul>
+                </div>
+                <!-- #Nav Ends -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #Header Starts -->
+
+<div id="test">
+    @RenderBody()
+</div>
+
+<!-- Footer Starts -->
+<div id="footer">
+    <div class="container">
+        <p style="font-size:18px ; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"> Copyright 2015.</p>
+    </div>
+</div>
+<!-- # Footer Ends -->
+</body>
+</html>

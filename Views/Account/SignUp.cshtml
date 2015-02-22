@@ -1,0 +1,73 @@
+﻿@model MusicCloud.Models.User
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Scripts/jquery-1.8.2.js"></script>
+    <title></title>
+    <meta charset="utf-8">
+    <link href="~/Content/loginstyle.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        $(document).ready(function () {
+            $('#b1').click(function () {
+                var userName = $('#UserName').val();
+                $.getJSON("/Account/CheckUserName?UserName=" + userName, function (data) {
+                    if (!data) {
+                        $('#result').text("User already exists in database");
+                    }
+                    else {
+                        $('#result').text("User Name is available");
+                    }
+                });
+            });
+        });
+        addEventListener("load", function () { setTimeout(hideURLbar, 0); }, false); function hideURLbar() { window.scrollTo(0, 1); }
+    </script>
+    <!--webfonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text.css' />
+    <!--//webfonts-->
+</head>
+<body>
+    <div class="main">
+        <div class="header">
+            <h1>Login or Create a Free Account!</h1>
+        </div>
+            <div class="left-form">
+                <h2>New Account:</h2>
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-signin" }))
+                {
+                    @Html.TextBoxFor(m => m.Name, null, new { @id = "UserName", @required = "true", @class = "form-control", @placeholder = "Name" , @style = "margin-bottom:20px;"})
+                    <input type="button" id="b1" value="Check" />
+                    <p id="result"></p>
+                    @Html.ValidationMessageFor(m => m.Name);
+                    @Html.TextBoxFor(m => m.Password, null, new { @required = "true", @class = "form-control", @placeholder = "Password", @style = "margin-bottom:20px;" })
+                    @Html.ValidationMessageFor(m => m.Password);
+                    @Html.TextBoxFor(m => m.Email, null, new { @required = "true", @class = "form-control", @placeholder = "Email", @style = "margin-bottom:20px;" })
+                    @Html.ValidationMessageFor(m => m.Email);
+                    <button style="margin-top:10px" class="btn btn-lg btn-primary btn-block" type="submit">
+                        Create Account
+                    </button>
+                    @Html.ValidationMessage("ex");
+                }
+            </div>
+            <div class="right-form">
+                <h2>Login:</h2>
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-signin" }))
+                {
+                    @Html.LabelFor(m => m.Name)
+                    @Html.TextBoxFor(m => m.Name, null, new { @required = "true", @class = "form-control", @placeholder = "Name", @style = "margin-bottom:6px;" })
+                    @Html.ValidationMessageFor(m => m.Name);
+                    @Html.LabelFor(m => m.Password)
+                    @Html.TextBoxFor(m => m.Password, null, new { @required = "true", @class = "form-control", @placeholder = "Password", @style = "margin-bottom:6px;" })
+                    @Html.ValidationMessageFor(m => m.Password);
+                    <button style="margin-top:10px" class="btn btn-lg btn-primary btn-block" type="submit">
+                        Log in
+                    </button>
+                    @Html.ValidationMessage("l");
+                }
+            </div>
+            <div class="clear"> </div>
+    </div>
+</body>
+</html>

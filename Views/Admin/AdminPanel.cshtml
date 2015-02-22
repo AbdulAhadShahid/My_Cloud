@@ -1,0 +1,36 @@
+﻿@model MusicCloud.Models.Song
+@{
+    ViewBag.Title = "Admin Panel";
+}
+<h2 style="margin-top:70px; margin-left:20px; margin-bottom:30px;color: #666;font-family:'Lithos Pro'"><span class="glyphicon glyphicon-user"></span> Add Songs</h2>
+<div class="container"> 
+        @using (Html.BeginForm("save", "Admin", FormMethod.Post, new { @class = "form-signin", @enctype = "multipart/form-data" }))
+        {
+            @Html.TextBoxFor(m => m.Name, null, new { @type = "file", @class = "form-control", @placeholder = "Name", @required="true" })
+            @Html.TextBoxFor(m => m.SingerName, null, new { @class = "form-control", @placeholder = "Singer Name", @required = "true" })
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
+            @Html.ValidationMessage("ad")
+        }
+</div>
+
+<h2 style="margin-top:70px; margin-left:20px; margin-bottom:30px;color: #666;font-family:'Lithos Pro'"><span class="glyphicon glyphicon-user"></span> Update Songs</h2>
+<div class="container">
+    <form method="post" action="/Admin/Update" enctype="multipart/form-data">
+        <input type="text" name="songoldname" class="form-control" placeholder="Song's Old Name" required>
+        <input type="file" name="Name" class="form-control" placeholder="Song's New Name">
+        <input type="text" name="SingerName" class="form-control" placeholder="Singer's New Name">
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Update</button>
+        @Html.ValidationMessage("exist")
+        @Html.ValidationMessage("up")
+    </form>
+</div>
+
+<h2 style="margin-top:70px; margin-left:20px; margin-bottom:30px;color: #666;font-family:'Lithos Pro'"><span class="glyphicon glyphicon-user"></span> Delete Songs</h2>
+<div class="container">
+    <form style="margin-bottom:30px" method="post" action="/Admin/Delete">
+        <input type="text" name="Name" class="form-control" placeholder="Song's Name" required>
+        <button type="submit" class="btn btn-lg btn-primary btn-block">Delete</button>
+        @Html.ValidationMessage("exi")
+        @Html.ValidationMessage("del")
+    </form>
+</div>

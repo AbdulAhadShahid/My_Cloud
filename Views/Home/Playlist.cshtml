@@ -1,0 +1,29 @@
+﻿@model List<MusicCloud.Models.Song> 
+@{
+    ViewBag.Title = "Playlist";
+}
+
+
+<div id="playlist" class="spacer">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <h1 style="font-family:'lithos pro';margin-left:50px; margin-top:20px; margin-bottom:30px"><span class="glyphicon glyphicon-list"></span> Playlist</h1>
+            <div style ="font-family:'lithos pro';background-color:HighlightText;margin-left:50px;margin-right:50px">
+                @foreach (var m in @Model)
+                {
+                    <div style="padding-top:20px;padding-left:20px">
+                        <h2 style="font-family:'lithos pro';background-color:HighlightText;margin-top:10px">@m.Name</h2>
+                        <audio style="margin-top:20px" controls>
+                            <source src="~/Songs/@m.SongFileName" type="audio/ogg">
+                            Your browser does not support the audio element.
+                        </audio>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <span style="margin-left:20px">@Html.ActionLink("Add To Favourites", "AddToFav", new { name = m.Name, uname = User.Identity.Name })</span>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
